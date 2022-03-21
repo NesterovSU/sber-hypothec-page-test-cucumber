@@ -32,7 +32,7 @@
         <!-- https://mvnrepository.com/artifact/org.junit.platform/junit-platform-launcher -->
         <dependency>
             <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-launcher</artifactId>
+            <artifactId>junit-platform-runner</artifactId>
             <version>1.8.2</version>
             <scope>test</scope>
         </dependency>
@@ -47,7 +47,6 @@
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit</artifactId>
             <version>5.7.0</version>
-            <scope>test</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-cucumber5-jvm -->
         <dependency>
@@ -78,10 +77,12 @@
                 <version>3.0.0-M5</version>
                 <configuration>
                     <testFailureIgnore>true</testFailureIgnore>
+                    <includes>**/*CucumberRunner.java</includes>
                     <argLine>
                         -Dfile.encoding=UTF-8
-                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                        -Dallure.results.directory=${project.build.directory}/reports/allure-results
                         -Dcucumber.options="--plugin io.qameta.allure.cucumber5jvm.AllureCucumber5Jvm"
+                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
                 </configuration>
                 <dependencies>
@@ -98,6 +99,8 @@
                 <version>2.10.0</version>
                 <configuration>
                     <reportVersion>2.10.0</reportVersion>
+                    <resultsDirectory>${project.build.directory}/reports/allure-results</resultsDirectory>
+                    <reportDirectory>${project.build.directory}/reports/allure-reports</reportDirectory>
                 </configuration>
             </plugin>
         </plugins>
