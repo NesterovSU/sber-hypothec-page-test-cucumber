@@ -1,5 +1,7 @@
 package managers;
 
+import utils.MyProp;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -39,9 +41,9 @@ public class PropertiesManager {
     }
 
     private void setSystemDriversPaths() {
-        System.setProperty("webdriver.gecko.driver", PROPERTIES.get("webdriver.gecko.driver").toString());
-        System.setProperty("webdriver.chrome.driver", PROPERTIES.get("webdriver.chrome.driver").toString());
-        System.setProperty("webdriver.edge.driver", PROPERTIES.get("webdriver.edge.driver").toString());
+        System.setProperty("webdriver.gecko.driver", PROPERTIES.get(MyProp.GECKO).toString());
+        System.setProperty("webdriver.chrome.driver", PROPERTIES.get(MyProp.CHROME).toString());
+        System.setProperty("webdriver.edge.driver", PROPERTIES.get(MyProp.EDGE).toString());
     }
 
     public String get(String key) {

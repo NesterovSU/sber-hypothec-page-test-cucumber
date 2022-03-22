@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import utils.MyProp;
 
 import java.util.concurrent.TimeUnit;
 
@@ -20,7 +21,7 @@ public class DriverManager {
 
     private static WebDriver create() {
 
-        String browser = properties.get("browser.type");
+        String browser = properties.get(MyProp.BROWSER);
         switch (browser == null ? "chrome" : browser) {
             case "chrome":
                 webDriver = new ChromeDriver();
@@ -35,8 +36,8 @@ public class DriverManager {
                 webDriver = new ChromeDriver();
         }
 
-        long implWait = Long.parseLong(properties.get("implicitly.wait"));
-        long pgLdTt = Long.parseLong(properties.get("page.load.timeout"));
+        long implWait = Long.parseLong(properties.get(MyProp.IMPLWAIT));
+        long pgLdTt = Long.parseLong(properties.get(MyProp.PGLDWAIT));
         webDriver.manage().timeouts().implicitlyWait(implWait, TimeUnit.SECONDS);
         webDriver.manage().timeouts().pageLoadTimeout(pgLdTt, TimeUnit.SECONDS);
 //        webDriver.manage().window().setSize(new Dimension(1920, 1080));

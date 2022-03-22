@@ -8,6 +8,8 @@ import managers.PagesManager;
 import managers.PropertiesManager;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import utils.MyProp;
+
 
 /**
  * @author Sergey Nesterov
@@ -17,7 +19,7 @@ public class Hook {
     @Before(value = "@myTag")
     public void openHomePage() {
         DriverManager.getInstance().get(
-                PropertiesManager.getInstance().get("home.url"));
+                PropertiesManager.getInstance().get(MyProp.HOME_URL));
     }
 
     @After(value = "@myTag")
