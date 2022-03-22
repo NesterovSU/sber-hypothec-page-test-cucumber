@@ -46,8 +46,7 @@ public class HypothecPage extends BasePage {
         for (WebElement we : formList) {
             if (!we.getText().contains(name)) continue;
             WebElement in = we.findElement(By.xpath("./input"));
-            in.click();
-            in.click();
+            wait.until(ExpectedConditions.elementToBeClickable(in)).click();
             in.sendKeys(Keys.chord(Keys.CONTROL, "a"));
             in.sendKeys(number.toString());
             waitStopChanging(in);
