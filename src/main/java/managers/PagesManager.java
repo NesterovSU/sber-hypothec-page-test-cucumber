@@ -24,7 +24,7 @@ public class PagesManager {
     private PagesManager() {
     }
 
-    public HypothecPage getBasketPage() {
+    public HypothecPage getHypothecPage() {
         if (hypothecPage == null) hypothecPage = new HypothecPage();
         return hypothecPage;
     }

@@ -1,38 +1,38 @@
 package pages;
 
-import org.openqa.selenium.WebDriver;
+import org.junit.jupiter.api.Assertions;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import java.util.List;
 
 /**
  * @author Sergey Nesterov
  */
 public class HypothecPage extends BasePage {
 
-    @FindBy(xpath = "//*[text()='Стоимость недвижимости']/../input")
-    private WebElement houseCost;
+    private final String CALC_RES_BLOCK = "//*[contains(@data-e2e-id,'calculator/main')]";
 
-    @FindBy(xpath = "//*[text()='Первоначальный взнос']/../input")
-    private WebElement initialFee;
+    @FindAll({
+            @FindBy(xpath = CALC_RES_BLOCK + "//*[text()='Сумма кредита']"),
+            @FindBy(xpath = CALC_RES_BLOCK + "//*[text()='Ежемесячный платеж']"),
+            @FindBy(xpath = CALC_RES_BLOCK + "//*[text()='Процентная ставка']"),
+            @FindBy(xpath = CALC_RES_BLOCK + "//*[text()='Необходимый доход']"),
+    })
+    private List<WebElement> resultList;
 
-    @FindBy(xpath = "//*[text()='Срок кредита']/../input")
-    private WebElement creditTerm;
+    @FindBy(xpath = "//input[@class='switch-input-3-2-2']/ancestor::div[3]")
+    private List<WebElement> checkBoxList;
 
-    @FindBy(xpath = "//*[text()='Страхование жизни и здоровья']/following::span[1]//input")
-    private WebElement lifeInsurance;
+    @FindBy(xpath = "//*[@class='dc-input__input-container-6-1-0']")
+    private List<WebElement> formList;
 
-    @FindBy(xpath = "//*[text()='Сумма кредита']/following::span[1]")
-    private WebElement creditSum;
-
-    @FindBy(xpath = "//*[text()='Ежемесячный платеж']/following::span[1]")
-    private WebElement monthlyPayment;
-
-    @FindBy(xpath = "//*[text()='Необходимый доход']/following::span[1]")
-    private WebElement requiredIncome;
-
-    @FindBy(xpath = "//*[text()='Процентная ставка']/following::span[1]")
-    private WebElement interestRate;
+    @FindBy(xpath = "//iframe")
+    private WebElement iframe;
 
     @FindBy(xpath = "//h2[contains(text(),'Рассчитайте ипотеку')]")
     private WebElement title;
@@ -41,39 +41,56 @@ public class HypothecPage extends BasePage {
         wait.until(ExpectedConditions.visibilityOf(title));
     }
 
-    public HypothecPage typeHouseCost(String text) {
-        wait.until(ExpectedConditions.visibilityOf(houseCost)).click();
-        return this;
+    public void typeInForm(String name, Integer number) {
+        driver.switchTo().frame(iframe);
+        for (WebElement we : formList) {
+            if (!we.getText().contains(name)) continue;
+            WebElement in = we.findElement(By.xpath("./input"));
+            in.click();
+            in.click();
+            in.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+            in.sendKeys(number.toString());
+            waitStopChanging(in);
+            Assertions.assertEquals(
+                    number.toString(),
+                    in.getAttribute("value").replaceAll("\\D", ""),
+                    "Значение '" + name + "' не ввелось в форму");
+            driver.switchTo().defaultContent();
+            return;
+        }
+        Assertions.fail("Не найдена форма " + name);
     }
 
-    public HypothecPage typeInitialFee(String text) {
-        initialFee.sendKeys(text);
-        return this;
+    public void unCheckSelector(String name) {
+        driver.switchTo().frame(iframe);
+        for (WebElement we : checkBoxList) {
+            if (!we.getText().contains(name)) continue;
+            WebElement in = we.findElement(By.xpath(".//input"));
+            if (in.isSelected()) in.click();
+            Assertions.assertFalse(in.isSelected(), "Не выключился чекбокс" + name);
+            driver.switchTo().defaultContent();
+            return;
+        }
+        Assertions.fail("Не найден чекбокс " + name);
     }
 
-    public HypothecPage typeCreditTerm(String text) {
-        initialFee.sendKeys(text);
-        return this;
-    }
-
-    public HypothecPage unCheckLifeInsurance() {
-        if (lifeInsurance.isSelected()) lifeInsurance.click();
-        return this;
-    }
-
-    public int getCreditSum() {
-        return Integer.parseInt(creditSum.getText().replaceAll("\\D", ""));
-    }
-
-    public int getMonthlyPayment() {
-        return Integer.parseInt(monthlyPayment.getText().replaceAll("\\D", ""));
-    }
-
-    public int getRequiredIncome() {
-        return Integer.parseInt(requiredIncome.getText().replaceAll("\\D", ""));
-    }
-
-    public String getInterestRate() {
-        return interestRate.getText();
+    public void verifyValue(String name, Integer value) {
+        driver.switchTo().frame(iframe);
+        for (WebElement we : resultList) {
+            if (!we.getText().contains(name)) continue;
+            scrollTo(we);
+            WebElement in = we.findElement(By.xpath("./following::span[1]"));
+            waitStopChanging(in);
+            System.out.println(value + " " + in.getText());
+            Assertions.assertEquals(
+                    value.toString(),
+                    in.getText()
+                            .split("%")[0]
+                            .replaceAll("\\D", ""),
+                    "Значение '" + name + "' не соответствует проверочному");
+            driver.switchTo().defaultContent();
+            return;
+        }
+        Assertions.fail("Не найден показатель " + name);
     }
 }

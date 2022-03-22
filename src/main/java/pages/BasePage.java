@@ -2,6 +2,7 @@ package pages;
 
 import managers.DriverManager;
 import org.junit.jupiter.api.Assertions;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -21,13 +22,16 @@ public class BasePage {
     @FindBy(xpath = "//a[contains(@class,'menu__link_second')]")
     private List<WebElement> mainSubMenu;
 
+    @FindBy(xpath = "//button[contains(@class,'cookie')]")
+    private WebElement cookie;
+
     protected WebDriverWait wait;
     protected WebDriver driver;
 
     public BasePage() {
         driver = DriverManager.getInstance();
         PageFactory.initElements(driver, this);
-        wait = new WebDriverWait(driver, 10);
+        wait = new WebDriverWait(driver, 5);
     }
 
     public BasePage clickInMainMenu(String name) {
@@ -51,5 +55,34 @@ public class BasePage {
         }
         Assertions.fail("Не найдена кнопка " + name + " в подменю основного меню");
         return this;
+    }
+
+    public void closeCookies(){
+        if (cookie.isDisplayed()) cookie.click();
+    }
+
+    public void scrollTo(WebElement we) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView()", we);
+    }
+
+    /**
+     * Ожидаем пока текст в веб-элементе не перестанет изменяться
+     * @param we веб-элемент
+     */
+    public void waitStopChanging(WebElement we){
+        int timeout = 50; //*0.1sec
+        waitStopChanging(we, timeout);
+    }
+
+    public void waitStopChanging(WebElement we, int timeout){
+        String before;
+        do {
+            before = we.getText();
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }while (!we.getText().equals(before) && --timeout>0);
     }
 }

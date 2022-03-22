@@ -1,6 +1,5 @@
 package managers;
 
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -40,7 +39,8 @@ public class DriverManager {
         long pgLdTt = Long.parseLong(properties.get("page.load.timeout"));
         webDriver.manage().timeouts().implicitlyWait(implWait, TimeUnit.SECONDS);
         webDriver.manage().timeouts().pageLoadTimeout(pgLdTt, TimeUnit.SECONDS);
-        webDriver.manage().window().setSize(new Dimension(1920, 1080));
+//        webDriver.manage().window().setSize(new Dimension(1920, 1080));
+        webDriver.manage().window().maximize();
         return webDriver;
     }
 

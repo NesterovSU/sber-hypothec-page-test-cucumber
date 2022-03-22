@@ -2,21 +2,27 @@ package steps;
 
 import io.cucumber.java.ru.И;
 import managers.PagesManager;
+import pages.HomePage;
 
 /**
  * @author Sergey Nesterov
  */
 public class HomePageStep {
 
-    private PagesManager pagesManager = PagesManager.getInstance();
+    private HomePage homePage = PagesManager.getInstance().getHomePage();
 
-    @И("^Выбрать меню '([^\"]*)'$")
+    @И("^Выбрать меню '([^\"]+)'$")
     public void clickInMainMenu(String buttonName){
-        pagesManager.getHomePage().clickInMainMenu(buttonName);
+        homePage.clickInMainMenu(buttonName);
     }
 
-    @И("^Выбрать подменю '([^\"]*)'$")
+    @И("^Выбрать подменю '([^\"]+)'$")
     public void clickInMainSubMenu(String buttonName){
-        pagesManager.getHomePage().clickInMainSubMenu(buttonName);
+        homePage.clickInMainSubMenu(buttonName);
+    }
+
+    @И("Закрыть сообщение куки")
+    public void closeCookie(){
+        homePage.closeCookies();
     }
 }
