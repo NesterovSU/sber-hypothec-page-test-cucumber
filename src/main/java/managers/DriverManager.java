@@ -4,8 +4,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import utils.MyProp;
 
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -31,6 +35,21 @@ public class DriverManager {
                 break;
             case "edge":
                 webDriver = new EdgeDriver();
+                break;
+            case "remote":
+                DesiredCapabilities capabilities = new DesiredCapabilities();
+                capabilities.setBrowserName("firefox");
+                capabilities.setVersion("65.0");
+                capabilities.setCapability("enableVNC", true);
+                capabilities.setCapability("enableVideo", false);
+                try {
+                    RemoteWebDriver driver = new RemoteWebDriver(
+                            URI.create("http://selenoid.appline.ru:4445/wd/hub").toURL(),
+                            capabilities
+                    );
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
                 break;
             default:
                 webDriver = new ChromeDriver();

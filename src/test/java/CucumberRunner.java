@@ -8,9 +8,10 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = {"src/test/features"},
+        features = {"src/test/resources/features"},
         glue = {"steps"},
-        tags = {"@myTag"}
+        tags = {"@myTag"},
+        plugin = {"utils.MyListener"}
 )
 public class CucumberRunner {
 }

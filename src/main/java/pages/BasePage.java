@@ -64,6 +64,7 @@ public class BasePage {
     public void scrollTo(WebElement we) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView()", we);
     }
+    
 
     /**
      * Ожидаем пока текст в веб-элементе не перестанет изменяться
