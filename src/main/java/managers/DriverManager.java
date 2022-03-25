@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class DriverManager {
     private static WebDriver webDriver;
+    private static DesiredCapabilities capabilities;
     private static PropertiesManager properties = PropertiesManager.getInstance();
 
     public static WebDriver getInstance() {
@@ -36,8 +37,8 @@ public class DriverManager {
             case "edge":
                 webDriver = new EdgeDriver();
                 break;
-            case "remote":
-                DesiredCapabilities capabilities = new DesiredCapabilities();
+            case "remote.chrome":
+                capabilities = new DesiredCapabilities();
                 capabilities.setBrowserName("chrome");
                 capabilities.setVersion("84.0");
                 capabilities.setCapability("enableVNC", true);
@@ -45,6 +46,22 @@ public class DriverManager {
                 try {
                     webDriver = new RemoteWebDriver(
                             URI.create("http://51.250.100.60:4444/wd/hub").toURL(),
+                            capabilities
+                    );
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "remote.firefox":
+                capabilities = new DesiredCapabilities();
+                capabilities.setBrowserName("firefox");
+                capabilities.setVersion("78.0");
+                capabilities.setCapability("enableVNC", true);
+                capabilities.setCapability("enableVideo", false);
+
+                try {
+                    RemoteWebDriver driver = new RemoteWebDriver(
+                            URI.create("http://selenoid:4444/wd/hub").toURL(),
                             capabilities
                     );
                 } catch (MalformedURLException e) {
