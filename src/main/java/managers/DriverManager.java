@@ -41,7 +41,7 @@ public class DriverManager {
                 capabilities.setBrowserName("firefox");
                 capabilities.setVersion("65.0");
                 capabilities.setCapability("enableVNC", true);
-                capabilities.setCapability("enableVideo", false);
+                capabilities.setCapability("enableVideo", true);
                 try {
                     RemoteWebDriver driver = new RemoteWebDriver(
                             URI.create("http://selenoid.appline.ru:4445/wd/hub").toURL(),
