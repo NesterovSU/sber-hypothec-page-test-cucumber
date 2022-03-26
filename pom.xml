@@ -79,6 +79,7 @@
                     <testFailureIgnore>true</testFailureIgnore>
                     <includes>**/*CucumberRunner.java</includes>
                     <argLine>
+                        -Xmx512m
                         -Dfile.encoding=UTF-8
                         -Dallure.results.directory=${project.build.directory}/reports/allure-results
 <!--                        -Dcucumber.options="&#45;&#45;plugin io.qameta.allure.cucumber5jvm.AllureCucumber5Jvm"-->
