@@ -4,7 +4,7 @@ node{
     stage('CheckoutSCM'){
         checkout(
                 [$class: 'GitSCM',
-                branches:[[name: 'refs/heads/${BRANCH}']],
+                branches:[[name: 'refs/heads/master']],
                 userRemoteConfigs:[[url:'https://github.com/NesterovSU/sber-hypothec-page-test-cucumber.git']]]
         )
     }
