@@ -13,7 +13,7 @@ node{
     }
     stage('Run Tests'){
         try{
-            sh '${mvn} test -Dbrowser.type=\"${BROWSER}\"'
+            sh '${mvn} test -Dbrowser.type=\"remote.firefox\"'
         }
         catch (Exception ex){
             echo "Test run was broken"
