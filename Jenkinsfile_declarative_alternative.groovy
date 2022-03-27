@@ -4,6 +4,7 @@ pipeline {
     agent any
     parameters {
         string(name: 'BROWSER', defaultValue: 'remote.chrome', description: 'Тип браузера')
+        string(name: 'TAG', defaultValue: '@myTag', description: 'Выбор теста')
     }
     stages {
         stage('Build') {
@@ -13,7 +14,8 @@ pipeline {
         }
         stage('Run Tests') {
             steps {
-                sh "${mvn} test -Dtype.browser=\"${params.BROWSER}\""
+                sh "${mvn} test -Dtype.browser=\"${params.BROWSER}\"" +
+                        "${mvn} test -Dtype.browser=\"${params.TAG}\""
             }
         }
         stage('Allure Report Generation') {
