@@ -42,7 +42,7 @@ public class DriverManager {
                 capabilities.setBrowserName("chrome");
                 capabilities.setVersion("84.0");
                 capabilities.setCapability("enableVNC", true);
-                capabilities.setCapability("enableVideo", true);
+                capabilities.setCapability("enableVideo", false);
                 try {
                     webDriver = new RemoteWebDriver(
                             URI.create("http://51.250.100.60:4444/wd/hub").toURL(),

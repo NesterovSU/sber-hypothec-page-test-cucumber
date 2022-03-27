@@ -3,7 +3,7 @@ def mvn = "/var/lib/jenkins/tools/hudson.tasks.Maven_MavenInstallation/mvn/bin/m
 pipeline {
     agent any
     parameters {
-        string(name: 'TAG', defaultValue: '@myTag', description: 'тег для запуска')
+        string(name: 'BROWSER', defaultValue: 'remote.chrome', description: 'Тип браузера')
     }
     stages {
         stage('Build') {
@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Run Tests') {
             steps {
-                sh "${mvn} test -Dcucumber.filter.tags=\"${params.TAG}\""
+                sh "${mvn} test -Dtype.browser=\"${params.BROWSER}\""
             }
         }
         stage('Allure Report Generation') {
