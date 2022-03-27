@@ -3,8 +3,8 @@ def mvn = "/var/lib/jenkins/tools/hudson.tasks.Maven_MavenInstallation/mvn/bin/m
 pipeline {
     agent any
     parameters {
-        string(name: 'BROWSER', defaultValue: 'remote.chrome', description: 'Тип браузера')
         string(name: 'TAG', defaultValue: '@myTag', description: 'Выбор теста')
+        choice(name: 'BROWSER', choices: ['remote.chrome', 'remote.firefox'], description: 'Выбор браузера')
     }
     stages {
         stage('Build') {
